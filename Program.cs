@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 
 namespace SydneyCoffee
 {
@@ -9,16 +10,16 @@ namespace SydneyCoffee
             // Declaring N and allocating a value
             int n = 2;
 
-            // declaring arrays to store data
-            String[] name = new string[n];
-            int[] quantity = new int[n];
-            String[] reseller = new string[n];
-            double[] charge = new double[n];
+            // declaring lists to store data
+            List<string> name = new List<string>();
+            List<int> quantity = new List<int>();
+            List<string> reseller = new List<string>();
+            List<double> charge = new List<double>();
             double price;
             double min = 9999999;
-            String minName = "";
+            string minName = "";
             double max = -1;
-            String maxName = "";
+            string maxName = "";
 
             // Welcome message
             Console.WriteLine("\t\t\t\tWelcome to use Sydney Coffee Program\n");
@@ -27,48 +28,50 @@ namespace SydneyCoffee
             for (int i = 0; i < n; i++)
             {
                 Console.Write("Enter customer name: ");
-                name[i] = Console.ReadLine();
+                name.Add(Console.ReadLine());
 
-                quantity[i] = 0;
+                int currentQuantity = 0;
                 // The loop will continue whenever the entered value is out of range
                 do
                 {
                     Console.Write("Enter the number of coffee beans bags (bag/1kg): ");
-                    quantity[i] = Convert.ToInt32(Console.ReadLine());
+                    currentQuantity = Convert.ToInt32(Console.ReadLine());
 
-                    if (quantity[i] < 1 || quantity[i] > 200)
+                    if (currentQuantity < 1 || currentQuantity > 200)
                     {
                         Console.WriteLine("Invalid Input!\nCoffee bags between 1 and 200 can be ordered.");
                     }
-                } while (quantity[i] < 1 || quantity[i] > 200);
+                } while (currentQuantity < 1 || currentQuantity > 200);
+                
+                quantity.Add(currentQuantity);
 
                 // determining the price
-                if (quantity[i] <= 5)
+                if (currentQuantity <= 5)
                 {
-                    price = 36 * quantity[i];
+                    price = 36 * currentQuantity;
                 }
-                else if (quantity[i] <= 15)
+                else if (currentQuantity <= 15)
                 {
-                    price = 34.5 * quantity[i];
+                    price = 34.5 * currentQuantity;
                 }
                 else
                 {
-                    price = 32.7 * quantity[i];
+                    price = 32.7 * currentQuantity;
                 }
 
-                Console.Write("Enter yes/no to indicate whesther you are a reseller: ");
-                reseller[i] = Console.ReadLine();
+                Console.Write("Enter yes/no to indicate whether you are a reseller: ");
+                reseller.Add(Console.ReadLine());
 
                 if (reseller[i] == "yes")
                 {
                     // 20% discount
-                    charge[i] = price * 0.8;
+                    charge.Add(price * 0.8);
                 }
                 else
                 {
-                    charge[i] = price;
+                    charge.Add(price);
                 }
-                Console.WriteLine(String.Format("The total sales value from {0} is ${1}", name[i], charge[i]));
+                Console.WriteLine($"The total sales value from {name[i]} is ${charge[i]}");
                 Console.WriteLine("-----------------------------------------------------------------------------");
 
                 // finding max min value
@@ -91,21 +94,18 @@ namespace SydneyCoffee
             Console.WriteLine("-----------------------------------------------------------------------------");
 
             // displaying table header
-            Console.WriteLine(String.Format("{0,15}{1,10}{2,10}{3,10}",
-                        "Name", "Quantity", "Reseller", "Charge"));
+            Console.WriteLine($"{"Name",15}{"Quantity",10}{"Reseller",10}{"Charge",10}");
 
             // displaying table data
             for (int i = 0; i < n; i++)
             {
-                Console.WriteLine(String.Format("{0,15}{1,10}{2,10}{3,10}",
-                       name[i], quantity[i], reseller[i], charge[i]));
+                Console.WriteLine($"{name[i],15}{quantity[i],10}{reseller[i],10}{charge[i],10}");
             }
             
             Console.WriteLine("-----------------------------------------------------------------------------");
             Console.WriteLine("-----------------------------------------------------------------------------");
-            Console.WriteLine(String.Format("The customer spending most is {0} ${1}", maxName, max));
-            Console.WriteLine(String.Format("The customer spending least is {0} ${1}", minName, min));
-
+            Console.WriteLine($"The customer spending most is {maxName} ${max}");
+            Console.WriteLine($"The customer spending least is {minName} ${min}");
         }
     }
 }
