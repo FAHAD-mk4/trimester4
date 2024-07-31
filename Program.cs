@@ -1,25 +1,41 @@
 using System;
-using System.Collections.Generic;
 
 namespace SydneyCoffee
 {
     class Program
     {
+        // New function to calculate price based on quantity
+        static double CalculatePrice(int quantity)
+        {
+            if (quantity <= 5)
+            {
+                return 36 * quantity;
+            }
+            else if (quantity <= 15)
+            {
+                return 34.5 * quantity;
+            }
+            else
+            {
+                return 32.7 * quantity;
+            }
+        }
+
         static void Main(string[] args)
         {
             // Declaring N and allocating a value
             int n = 2;
 
-            // declaring lists to store data
-            List<string> name = new List<string>();
-            List<int> quantity = new List<int>();
-            List<string> reseller = new List<string>();
-            List<double> charge = new List<double>();
+            // declaring arrays to store data
+            String[] name = new string[n];
+            int[] quantity = new int[n];
+            String[] reseller = new string[n];
+            double[] charge = new double[n];
             double price;
             double min = 9999999;
-            string minName = "";
+            String minName = "";
             double max = -1;
-            string maxName = "";
+            String maxName = "";
 
             // Welcome message
             Console.WriteLine("\t\t\t\tWelcome to use Sydney Coffee Program\n");
@@ -28,50 +44,37 @@ namespace SydneyCoffee
             for (int i = 0; i < n; i++)
             {
                 Console.Write("Enter customer name: ");
-                name.Add(Console.ReadLine());
+                name[i] = Console.ReadLine();
 
-                int currentQuantity = 0;
+                quantity[i] = 0;
                 // The loop will continue whenever the entered value is out of range
                 do
                 {
                     Console.Write("Enter the number of coffee beans bags (bag/1kg): ");
-                    currentQuantity = Convert.ToInt32(Console.ReadLine());
+                    quantity[i] = Convert.ToInt32(Console.ReadLine());
 
-                    if (currentQuantity < 1 || currentQuantity > 200)
+                    if (quantity[i] < 1 || quantity[i] > 200)
                     {
                         Console.WriteLine("Invalid Input!\nCoffee bags between 1 and 200 can be ordered.");
                     }
-                } while (currentQuantity < 1 || currentQuantity > 200);
-                
-                quantity.Add(currentQuantity);
+                } while (quantity[i] < 1 || quantity[i] > 200);
 
-                // determining the price
-                if (currentQuantity <= 5)
-                {
-                    price = 36 * currentQuantity;
-                }
-                else if (currentQuantity <= 15)
-                {
-                    price = 34.5 * currentQuantity;
-                }
-                else
-                {
-                    price = 32.7 * currentQuantity;
-                }
+                // Using the new function to calculate price
+                price = CalculatePrice(quantity[i]);
 
-                Console.Write("Enter yes/no to indicate whether you are a reseller: ");
-                reseller.Add(Console.ReadLine());
+                Console.Write("Enter yes/no to indicate whesther you are a reseller: ");
+                reseller[i] = Console.ReadLine();
 
                 if (reseller[i] == "yes")
                 {
                     // 20% discount
-                    charge.Add(price * 0.8);
+                    charge[i] = price * 0.8;
                 }
                 else
                 {
-                    charge.Add(price);
+                    charge[i] = price;
                 }
-                Console.WriteLine($"The total sales value from {name[i]} is ${charge[i]}");
+                Console.WriteLine(String.Format("The total sales value from {0} is ${1}", name[i], charge[i]));
                 Console.WriteLine("-----------------------------------------------------------------------------");
 
                 // finding max min value
@@ -94,18 +97,20 @@ namespace SydneyCoffee
             Console.WriteLine("-----------------------------------------------------------------------------");
 
             // displaying table header
-            Console.WriteLine($"{"Name",15}{"Quantity",10}{"Reseller",10}{"Charge",10}");
+            Console.WriteLine(String.Format("{0,15}{1,10}{2,10}{3,10}",
+                        "Name", "Quantity", "Reseller", "Charge"));
 
             // displaying table data
             for (int i = 0; i < n; i++)
             {
-                Console.WriteLine($"{name[i],15}{quantity[i],10}{reseller[i],10}{charge[i],10}");
+                Console.WriteLine(String.Format("{0,15}{1,10}{2,10}{3,10}",
+                       name[i], quantity[i], reseller[i], charge[i]));
             }
             
             Console.WriteLine("-----------------------------------------------------------------------------");
             Console.WriteLine("-----------------------------------------------------------------------------");
-            Console.WriteLine($"The customer spending most is {maxName} ${max}");
-            Console.WriteLine($"The customer spending least is {minName} ${min}");
+            Console.WriteLine(String.Format("The customer spending most is {0} ${1}", maxName, max));
+            Console.WriteLine(String.Format("The customer spending least is {0} ${1}", minName, min));
         }
     }
 }
